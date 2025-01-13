@@ -23,7 +23,7 @@ jobs:
       run: make shared
 
     - name: Build package
-      run: make newlib.deb
+      run: make package
 
     - name: Install package
       run: sudo apt install ./newlib.deb

@@ -9,7 +9,7 @@ install shared static:
 	$(MAKE) -C $(PathToLibc) $@
 
 
-newlib.deb: static
+package: static newlib.deb 
 	mkdir -p newlib$(LINUX_TOOLCHAIN_PATH)/include
 	mkdir -p newlib$(LINUX_TOOLCHAIN_PATH)/mingw32/lib
 

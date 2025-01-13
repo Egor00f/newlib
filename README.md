@@ -13,3 +13,8 @@ shared library:
 ```
 make shared
 ```
+
+package:
+```
+make package
+```
