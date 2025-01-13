@@ -2,6 +2,7 @@
 *.a
 *.dll
 *.obj
+*.deb
 
 newlib/home/
 newlib-dev/home/

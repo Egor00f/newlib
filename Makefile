@@ -1,24 +1,28 @@
 LINUX_TOOLCHAIN_PATH = /home/autobuild/tools/win32
 
-PathToNewlib = contrib/sdk/sources/newlib/libc
+PathToNewlib = contrib/sdk/sources/newlib
+PathToLibc = $(PathToNewlib)/libc
 
-install shared static clean:
-	$(MAKE) -C $(PathToNewlib) $@
+ALL_PACKAGES = newlib.deb
+
+install shared static:
+	$(MAKE) -C $(PathToLibc) $@
 
 
 newlib.deb: static
 	mkdir -p newlib$(LINUX_TOOLCHAIN_PATH)/include
+	mkdir -p newlib$(LINUX_TOOLCHAIN_PATH)/mingw32/lib
 
-	cp -rf $(PathToNewlib)/include/* newlib$(LINUX_TOOLCHAIN_PATH)/include
-	cp -f $(PathToNewlib)/*.a newlib$(LINUX_TOOLCHAIN_PATH)/mingw32/lib
+	cp -rf $(PathToLibc)/include/* newlib$(LINUX_TOOLCHAIN_PATH)/include
+	cp -f $(PathToLibc)/*.a newlib$(LINUX_TOOLCHAIN_PATH)/mingw32/lib
 
-	dpkg-deb newlib $@
+	chmod 775 -R newlib
 
-newlib-dev.deb:
-
-	mkdir -p newlib-dev$(LINUX_TOOLCHAIN_PATH)/include
-
-	cp -rf $(PathToNewlib) newlib-dev$(LINUX_TOOLCHAIN_PATH)
+	dpkg-deb --build newlib $@
 
 
-	dpkg-deb newlib-dev $@
+clean:
+	$(MAKE) -C $(PathToLibc) $@
+
+	rm -f $(ALL_PACKAGES)
+	rm -rf newlib/home

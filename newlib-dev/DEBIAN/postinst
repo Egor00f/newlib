@@ -1,1 +1,0 @@
-make -C /home/autobuild/tools/win32/newlib/libc install

@@ -22,6 +22,12 @@ jobs:
     - name: Shared build
       run: make shared
 
+    - name: Build package
+      run: make newlib.deb
+
+    - name: Install package
+      run: sudo apt install ./newlib.deb
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
@@ -31,3 +37,4 @@ jobs:
             ./contrib/sdk/sources/newlib/libc/libc.a
             ./contrib/sdk/sources/newlib/libc/libc.dll
             ./contrib/sdk/sources/newlib/libc/libc.dll.a
+            ./newlib.deb
