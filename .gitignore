@@ -1,9 +1,7 @@
-### Windows ###
-Thumbs.db
-Thumbs.db:encryptable
-ehthumbs.db
-ehthumbs_vista.db
+*.o
+*.a
+*.dll
+*.obj
 
-### macOS ###
-.DS_Store
-._*
+newlib/home/
+newlib-dev/home/

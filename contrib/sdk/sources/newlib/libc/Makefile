@@ -2,14 +2,18 @@ CC = kos32-gcc
 AR = kos32-ar
 LD = kos32-ld
 
-INSTALLDIR:= /home/autobuild/tools/win32/mingw32
+ifeq ($(OS),Windows_NT)
+	TOOLCHAIN_PATH=C:/MinGW/msys/1.0/home/autobuild/tools/win32
+else
+	TOOLCHAIN_PATH=/home/autobuild/tools/win32
+endif
+
+INSTALLDIR:= $(TOOLCHAIN_PATH)/mingw32
 
 CFLAGS = -c -O2 -fno-builtin -fno-ident -fomit-frame-pointer -DMISSING_SYSCALL_NAMES
 LDFLAGS = -shared -s -T libcdll.lds --out-implib libc.dll.a --image-base 0 
 #LDFLAGS+= --output-def libc.orig.def
 ARFLAGS = crs
-
-SDK_DIR:= $(abspath ../../..)
 
 LIBC_TOPDIR   = .
 LIBC_INCLUDES = $(LIBC_TOPDIR)/include
@@ -603,7 +607,7 @@ $(NAME).dll: $(LIB_OBJS) $(SRC_DEP) Makefile
 #sed -f newlib.sed mem > libc.inc
 
 install: libc.dll libc.dll.a libdll.a
-	mv -f libc.dll $(SDK_DIR)/bin
+	mv -f libc.a $(INSTALLDIR)
 	mv -f libc.dll.a $(INSTALLDIR)/lib
 	mv -f libdll.a $(INSTALLDIR)/lib
 
@@ -614,7 +618,6 @@ static: $(NAME).a
 
 $(NAME).a: $(LIB_OBJS) $(SRC_DEP) Makefile
 	$(AR) $(ARFLAGS) $(NAME).a $(LIB_OBJS)
-	mv -f libc.a $(INSTALLDIR)
 
 crt/crt1.o: crt/crt1.c
 	$(CC) $(CFLAGS) $(DEFINES) $(INCLUDES) -fno-delete-null-pointer-checks crt/crt1.c -o $@

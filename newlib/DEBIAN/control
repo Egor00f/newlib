@@ -1,0 +1,12 @@
+Package: kos-newlib
+Version: 0.1.0
+Architecture: amd64
+Section: devel
+Pre-Depends: kos32-gcc
+Priority: optional
+Homepage: https://github.com/Egor00f/newlib
+Origin: http://git.kolibrios.org/KolibriOS/kolibrios
+Maintainer: Egor00f <velikiydolbayeb@gmail.com>
+Installed-Size: 8512
+Description: newlib library for kolibrios
+ include files and binary
