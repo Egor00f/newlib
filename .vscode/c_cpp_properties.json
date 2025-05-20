@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/contrib/sdk/sources/newlib/libc/include",
+                "C:/MinGW/msys/1.0/home/autobuild/tools/win32/lib/gcc/mingw32/5.4.0/include"
+            ],
+            "compilerPath": "C:/MinGW/msys/1.0/home/autobuild/tools/win32/bin/kos32-gcc",
+            "cStandard": "c11"
+        }
+    ],
+    "version": 4
+}

@@ -159,7 +159,6 @@ CORE_SRCS:=                   			\
 			time/tzset_r.c		\
 			time/tzvars.c
 
-
 STDLIB_SRCS=                 			\
     		__atexit.c          	\
     		__call_atexit.c     	\
@@ -521,7 +520,19 @@ POSIX_SRCS =	opendir.c \
 
 UNIX_SRCS =	basename.c \
 		dirname.c \
-		getcwd.c
+		getcwd.c	\
+	
+PROCESS_SRCS = getpid.c
+
+
+INET_SRCS = lnaof.c	\
+		make_addr.c	\
+		netof.c	\
+		network.c	\
+		ntop.c	
+
+NETDB_SRCS = getproto.c
+
 
 STATIC_OBJS =  $(patsubst %.S, %.o, $(patsubst %.c, %.o, $(STATIC_SRCS)))
 
@@ -565,6 +576,12 @@ PRINTF_OBJS= 	stdio/vfprintf.o	\
 		stdio/svfiwscanf.o	\
 		stdio/svfwscanf.o
 
+PROCESS_OBJS = $(patsubst %.c, process/%.o, $(PROCESS_SRCS))
+
+INET_OBJS = $(patsubst %.c, inet/%.o, $(INET_SRCS))
+
+NETDB_OBJS = $(patsubst %.c, netdb/%.o, $(NETDB_SRCS))
+
 ifeq ($(findstring static,$(MAKECMDGOALS)),static)
 
 LIB_SRCS:=  	$(STATIC_SRCS)
@@ -583,7 +600,10 @@ LIB_SRCS+=				\
 		$(STRING_SRCS)		\
 		$(STDLIB_SRCS)		\
 		$(POSIX_SRCS)		\
-		$(UNIX_SRCS)
+		$(UNIX_SRCS)	\
+		$(PROCESS_SRCS)	\
+		$(INET_SRCS)	\
+		$(NETDB_SRCS)
 
 LIB_OBJS+=				\
 		$(CORE_OBJS) 		\
@@ -593,7 +613,10 @@ LIB_OBJS+=				\
 		$(PRINTF_OBJS)		\
 		$(MATH_OBJS)		\
 		$(POSIX_OBJS)		\
-		$(UNIX_OBJS)
+		$(UNIX_OBJS)	\
+		$(PROCESS_OBJS)	\
+		$(INET_OBJS)	\
+		$(NETDB_OBJS)
 
 LIB_OBJS+= time/wcsftime.o
 

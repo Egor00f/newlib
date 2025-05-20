@@ -15,18 +15,18 @@ extern "C" {
 
 #if !defined(_SIGSET_T_DECLARED)
 #define	_SIGSET_T_DECLARED
-typedef	__sigset_t	sigset_t;
+    typedef	__sigset_t	sigset_t;
 #endif
 
 #if defined(__rtems__)
 
 #if defined(_POSIX_REALTIME_SIGNALS)
 
-/* sigev_notify values
-   NOTE: P1003.1c/D10, p. 34 adds SIGEV_THREAD.  */
+    /* sigev_notify values
+       NOTE: P1003.1c/D10, p. 34 adds SIGEV_THREAD.  */
 
 #define SIGEV_NONE   1  /* No asynchronous notification shall be delivered */
-                        /*   when the event of interest occurs. */
+       /*   when the event of interest occurs. */
 #define SIGEV_SIGNAL 2  /* A queued signal, with an application defined */
                         /*  value, shall be delivered when the event of */
                         /*  interest occurs. */
@@ -37,25 +37,25 @@ typedef	__sigset_t	sigset_t;
     NOTE: P1003.1c/D10, p. 34 adds sigev_notify_function and
           sigev_notify_attributes to the sigevent structure.  */
 
-union sigval {
-  int    sival_int;    /* Integer signal value */
-  void  *sival_ptr;    /* Pointer signal value */
-};
+    union sigval {
+        int    sival_int;    /* Integer signal value */
+        void* sival_ptr;    /* Pointer signal value */
+    };
 
-struct sigevent {
-  int              sigev_notify;               /* Notification type */
-  int              sigev_signo;                /* Signal number */
-  union sigval     sigev_value;                /* Signal value */
+    struct sigevent {
+        int              sigev_notify;               /* Notification type */
+        int              sigev_signo;                /* Signal number */
+        union sigval     sigev_value;                /* Signal value */
 
 #if defined(_POSIX_THREADS)
-  void           (*sigev_notify_function)( union sigval );
-                                               /* Notification function */
-  pthread_attr_t  *sigev_notify_attributes;    /* Notification Attributes */
+        void           (*sigev_notify_function)(union sigval);
+        /* Notification function */
+        pthread_attr_t* sigev_notify_attributes;    /* Notification Attributes */
 #endif
-};
+    };
 
-/* Signal Actions, P1003.1b-1993, p. 64 */
-/* si_code values, p. 66 */
+    /* Signal Actions, P1003.1b-1993, p. 64 */
+    /* si_code values, p. 66 */
 
 #define SI_USER    1    /* Sent by a user. kill(), abort(), etc */
 #define SI_QUEUE   2    /* Sent by sigqueue() */
@@ -63,14 +63,14 @@ struct sigevent {
 #define SI_ASYNCIO 4    /* Indicates completion of asycnhronous IO */
 #define SI_MESGQ   5    /* Indicates arrival of a message at an empty queue */
 
-typedef struct {
-  int          si_signo;    /* Signal number */
-  int          si_code;     /* Cause of the signal */
-  union sigval si_value;    /* Signal value */
-} siginfo_t;
+    typedef struct {
+        int          si_signo;    /* Signal number */
+        int          si_code;     /* Cause of the signal */
+        union sigval si_value;    /* Signal value */
+    } siginfo_t;
 #endif
 
-/*  3.3.8 Synchronously Accept a Signal, P1003.1b-1993, p. 76 */
+    /*  3.3.8 Synchronously Accept a Signal, P1003.1b-1993, p. 76 */
 
 #define SA_NOCLDSTOP 0x1   /* Do not generate SIGCHLD when children stop */
 #define SA_SIGINFO   0x2   /* Invoke the signal catching function with */
@@ -88,20 +88,20 @@ typedef struct {
  *      application should not use both simultaneously.
  */
 
-typedef void (*_sig_func_ptr)(int);
+    typedef void (*_sig_func_ptr)(int);
 
-struct sigaction {
-  int         sa_flags;       /* Special flags to affect behavior of signal */
-  sigset_t    sa_mask;        /* Additional set of signals to be blocked */
-                              /*   during execution of signal-catching */
-                              /*   function. */
-  union {
-    _sig_func_ptr _handler;  /* SIG_DFL, SIG_IGN, or pointer to a function */
+    struct sigaction {
+        int         sa_flags;       /* Special flags to affect behavior of signal */
+        sigset_t    sa_mask;        /* Additional set of signals to be blocked */
+        /*   during execution of signal-catching */
+        /*   function. */
+        union {
+            _sig_func_ptr _handler;  /* SIG_DFL, SIG_IGN, or pointer to a function */
 #if defined(_POSIX_REALTIME_SIGNALS)
-    void      (*_sigaction)( int, siginfo_t *, void * );
+            void      (*_sigaction)(int, siginfo_t*, void*);
 #endif
-  } _signal_handlers;
-};
+        } _signal_handlers;
+    };
 
 #define sa_handler    _signal_handlers._handler
 #if defined(_POSIX_REALTIME_SIGNALS)
@@ -113,21 +113,21 @@ struct sigaction {
 #else
 #define SA_NOCLDSTOP 1  /* only value supported now for sa_flags */
 
-typedef void (*_sig_func_ptr)(int);
+    typedef void (*_sig_func_ptr)(int);
 
-struct sigaction 
-{
-	_sig_func_ptr sa_handler;
-	sigset_t sa_mask;
-	int sa_flags;
-};
+    struct sigaction
+    {
+        _sig_func_ptr sa_handler;
+        sigset_t sa_mask;
+        int sa_flags;
+    };
 #endif /* defined(__rtems__) */
 
 #if __BSD_VISIBLE || __XSI_VISIBLE >= 4 || __POSIX_VISIBLE >= 200809
-/*
- * Minimum and default signal stack constants. Allow for target overrides
- * from <sys/features.h>.
- */
+    /*
+     * Minimum and default signal stack constants. Allow for target overrides
+     * from <sys/features.h>.
+     */
 #ifndef	MINSIGSTKSZ
 #define	MINSIGSTKSZ	2048
 #endif
@@ -135,57 +135,57 @@ struct sigaction
 #define	SIGSTKSZ	8192
 #endif
 
-/*
- * Possible values for ss_flags in stack_t below.
- */
+     /*
+      * Possible values for ss_flags in stack_t below.
+      */
 #define	SS_ONSTACK	0x1
 #define	SS_DISABLE	0x2
 
 #endif
 
-/*
- * Structure used in sigaltstack call.
- */
-typedef struct sigaltstack {
-  void     *ss_sp;    /* Stack base or pointer.  */
-  int       ss_flags; /* Flags.  */
-  size_t    ss_size;  /* Stack size.  */
-} stack_t;
+      /*
+       * Structure used in sigaltstack call.
+       */
+    typedef struct sigaltstack {
+        void* ss_sp;    /* Stack base or pointer.  */
+        int       ss_flags; /* Flags.  */
+        size_t    ss_size;  /* Stack size.  */
+    } stack_t;
 
 #define SIG_SETMASK 0	/* set mask with sigprocmask() */
 #define SIG_BLOCK 1	/* set of signals to block */
 #define SIG_UNBLOCK 2	/* set of signals to, well, unblock */
 
-int _EXFUN(sigprocmask, (int how, const sigset_t *set, sigset_t *oset));
+    int _EXFUN(sigprocmask, (int how, const sigset_t* set, sigset_t* oset));
 
 #if defined(_POSIX_THREADS)
-int _EXFUN(pthread_sigmask, (int how, const sigset_t *set, sigset_t *oset));
+    int _EXFUN(pthread_sigmask, (int how, const sigset_t* set, sigset_t* oset));
 #endif
 
 #if defined(__CYGWIN__) || defined(__rtems__)
 #ifdef _COMPILING_NEWLIB
-int _EXFUN(_kill, (pid_t, int));
+    int _EXFUN(_kill, (pid_t, int));
 #endif /* _COMPILING_NEWLIB */
 #endif /* __CYGWIN__ || __rtems__ */
 
-int _EXFUN(kill, (pid_t, int));
+    int _EXFUN(kill, (pid_t, int));
 
 #if __BSD_VISIBLE || __XSI_VISIBLE >= 4
-int _EXFUN(killpg, (pid_t, int));
-int _EXFUN(sigaction, (int, const struct sigaction *, struct sigaction *));
-int _EXFUN(sigaddset, (sigset_t *, const int));
-int _EXFUN(sigdelset, (sigset_t *, const int));
-int _EXFUN(sigismember, (const sigset_t *, int));
-int _EXFUN(sigfillset, (sigset_t *));
-int _EXFUN(sigemptyset, (sigset_t *));
-int _EXFUN(sigpending, (sigset_t *));
-int _EXFUN(sigsuspend, (const sigset_t *));
-int _EXFUN(sigpause, (int));
+    int _EXFUN(killpg, (pid_t, int));
+    int _EXFUN(sigaction, (int, const struct sigaction*, struct sigaction*));
+    int _EXFUN(sigaddset, (sigset_t*, const int));
+    int _EXFUN(sigdelset, (sigset_t*, const int));
+    int _EXFUN(sigismember, (const sigset_t*, int));
+    int _EXFUN(sigfillset, (sigset_t*));
+    int _EXFUN(sigemptyset, (sigset_t*));
+    int _EXFUN(sigpending, (sigset_t*));
+    int _EXFUN(sigsuspend, (const sigset_t*));
+    int _EXFUN(sigpause, (int));
 
 #if !defined(__CYGWIN__) && !defined(__rtems__)
-/* These depend upon the type of sigset_t, which right now 
-   is always a long.. They're in the POSIX namespace, but
-   are not ANSI. */
+    /* These depend upon the type of sigset_t, which right now
+       is always a long.. They're in the POSIX namespace, but
+       are not ANSI. */
 #define sigaddset(what,sig) (*(what) |= (1<<(sig)), 0)
 #define sigdelset(what,sig) (*(what) &= ~(1<<(sig)), 0)
 #define sigemptyset(what)   (*(what) = 0, 0)
@@ -195,7 +195,7 @@ int _EXFUN(sigpause, (int));
 #endif /* __BSD_VISIBLE || __XSI_VISIBLE >= 4 */
 
 #if __BSD_VISIBLE || __XSI_VISIBLE >= 4 || __POSIX_VISIBLE >= 200809
-int _EXFUN(sigaltstack, (const stack_t *__restrict, stack_t *__restrict));
+    int _EXFUN(sigaltstack, (const stack_t* __restrict, stack_t* __restrict));
 #endif
 
 #if defined(_POSIX_THREADS)
@@ -204,35 +204,35 @@ int _EXFUN(sigaltstack, (const stack_t *__restrict, stack_t *__restrict));
 #    error You need the winsup sources or a cygwin installation to compile the cygwin version of newlib.
 #  endif
 #endif
-int _EXFUN(pthread_kill, (pthread_t thread, int sig));
+    int _EXFUN(pthread_kill, (pthread_t thread, int sig));
 #endif
 
 #if defined(_POSIX_REALTIME_SIGNALS)
 
-/*  3.3.8 Synchronously Accept a Signal, P1003.1b-1993, p. 76
-    NOTE: P1003.1c/D10, p. 39 adds sigwait().  */
+    /*  3.3.8 Synchronously Accept a Signal, P1003.1b-1993, p. 76
+        NOTE: P1003.1c/D10, p. 39 adds sigwait().  */
 
-int _EXFUN(sigwaitinfo, (const sigset_t *set, siginfo_t *info));
-int _EXFUN(sigtimedwait,
-  (const sigset_t *set, siginfo_t *info, const struct timespec  *timeout)
-);
-int _EXFUN(sigwait, (const sigset_t *set, int *sig));
+    int _EXFUN(sigwaitinfo, (const sigset_t* set, siginfo_t* info));
+    int _EXFUN(sigtimedwait,
+        (const sigset_t* set, siginfo_t* info, const struct timespec* timeout)
+    );
+    int _EXFUN(sigwait, (const sigset_t* set, int* sig));
 
-/*  3.3.9 Queue a Signal to a Process, P1003.1b-1993, p. 78 */
-int _EXFUN(sigqueue, (pid_t pid, int signo, const union sigval value));
+    /*  3.3.9 Queue a Signal to a Process, P1003.1b-1993, p. 78 */
+    int _EXFUN(sigqueue, (pid_t pid, int signo, const union sigval value));
 
 #endif /* defined(_POSIX_REALTIME_SIGNALS) */
 
 #if defined(___AM29K__)
-/* These all need to be defined for ANSI C, but I don't think they are
-   meaningful.  */
+    /* These all need to be defined for ANSI C, but I don't think they are
+       meaningful.  */
 #define SIGABRT 1
 #define SIGFPE 1
 #define SIGILL 1
 #define SIGINT 1
 #define SIGSEGV 1
 #define SIGTERM 1
-/* These need to be defined for POSIX, and some others do too.  */
+       /* These need to be defined for POSIX, and some others do too.  */
 #define SIGHUP 1
 #define SIGQUIT 1
 #define NSIG 2
@@ -290,10 +290,10 @@ int _EXFUN(sigqueue, (pid_t pid, int signo, const union sigval value));
 #define	SIGUSR1 25	/* user defined signal 1 */
 #define	SIGUSR2 26	/* user defined signal 2 */
 
-/* Real-Time Signals Range, P1003.1b-1993, p. 61
-   NOTE: By P1003.1b-1993, this should be at least RTSIG_MAX
-         (which is a minimum of 8) signals.
- */
+    /* Real-Time Signals Range, P1003.1b-1993, p. 61
+       NOTE: By P1003.1b-1993, this should be at least RTSIG_MAX
+             (which is a minimum of 8) signals.
+     */
 #define SIGRTMIN 27
 #define SIGRTMAX 31
 #define __SIGFIRSTNOTRT SIGHUP
@@ -302,7 +302,7 @@ int _EXFUN(sigqueue, (pid_t pid, int signo, const union sigval value));
 #define NSIG	32      /* signal 0 implied */
 
 #elif defined(__svr4__)
-/* svr4 specifics. different signals above 15, and sigaction. */
+    /* svr4 specifics. different signals above 15, and sigaction. */
 #define	SIGUSR1	16
 #define SIGUSR2	17
 #define SIGCLD	18

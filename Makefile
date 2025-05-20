@@ -5,6 +5,8 @@ PathToLibc = $(PathToNewlib)/libc
 
 PackageName = newlib
 
+ALL_PACKAGES = $(PackageName).deb
+
 install shared static:
 	$(MAKE) -C $(PathToLibc) $@
 

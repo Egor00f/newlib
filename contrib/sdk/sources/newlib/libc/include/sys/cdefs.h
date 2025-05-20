@@ -66,9 +66,9 @@
 # define __ptrvalue     /* nothing */
 #endif
 
-/*
- * Testing against Clang-specific extensions.
- */
+ /*
+  * Testing against Clang-specific extensions.
+  */
 #ifndef	__has_attribute
 #define	__has_attribute(x)	0
 #endif
@@ -93,11 +93,11 @@
 #define	__END_DECLS
 #endif
 
-/*
- * This code has been put in place to help reduce the addition of
- * compiler specific defines in FreeBSD code.  It helps to aid in
- * having a compiler-agnostic source tree.
- */
+  /*
+   * This code has been put in place to help reduce the addition of
+   * compiler specific defines in FreeBSD code.  It helps to aid in
+   * having a compiler-agnostic source tree.
+   */
 
 #if defined(__GNUC__) || defined(__INTEL_COMPILER)
 
@@ -131,9 +131,9 @@
 #define	__GNUC_VA_LIST_COMPATIBILITY 1
 #endif
 
-/*
- * Compiler memory barriers, specific to gcc and clang.
- */
+   /*
+    * Compiler memory barriers, specific to gcc and clang.
+    */
 #if defined(__GNUC__)
 #define	__compiler_membar()	__asm __volatile(" " : : : "memory")
 #endif
@@ -145,7 +145,7 @@
 
 #define	__GNUCLIKE_BUILTIN_MEMCPY 1
 
-/* XXX: if __GNUC__ >= 2: not tested everywhere originally, where replaced */
+    /* XXX: if __GNUC__ >= 2: not tested everywhere originally, where replaced */
 #define	__CC_SUPPORTS_INLINE 1
 #define	__CC_SUPPORTS___INLINE 1
 #define	__CC_SUPPORTS___INLINE__ 1
@@ -199,14 +199,14 @@
 #define	__inline
 #define	__signed
 #define	__volatile
-/*
- * In non-ANSI C environments, new programs will want ANSI-only C keywords
- * deleted from the program and old programs will want them left alone.
- * When using a compiler other than gcc, programs using the ANSI C keywords
- * const, inline etc. as normal identifiers should define -DNO_ANSI_KEYWORDS.
- * When using "gcc -traditional", we assume that this is the intent; if
- * __GNUC__ is defined but __STDC__ is not, we leave the new keywords alone.
- */
+ /*
+  * In non-ANSI C environments, new programs will want ANSI-only C keywords
+  * deleted from the program and old programs will want them left alone.
+  * When using a compiler other than gcc, programs using the ANSI C keywords
+  * const, inline etc. as normal identifiers should define -DNO_ANSI_KEYWORDS.
+  * When using "gcc -traditional", we assume that this is the intent; if
+  * __GNUC__ is defined but __STDC__ is not, we leave the new keywords alone.
+  */
 #ifndef	NO_ANSI_KEYWORDS
 #define	const				/* delete ANSI C keywords */
 #define	inline
@@ -216,15 +216,15 @@
 #endif	/* !__CC_SUPPORTS___INLINE */
 #endif	/* !(__STDC__ || __cplusplus) */
 
-/*
- * Compiler-dependent macros to help declare dead (non-returning) and
- * pure (no side effects) functions, and unused variables.  They are
- * null except for versions of gcc that are known to support the features
- * properly (old versions of gcc-2 supported the dead and pure features
- * in a different (wrong) way).  If we do not provide an implementation
- * for a given compiler, let the compile fail if it is told to use
- * a feature that we cannot live without.
- */
+  /*
+   * Compiler-dependent macros to help declare dead (non-returning) and
+   * pure (no side effects) functions, and unused variables.  They are
+   * null except for versions of gcc that are known to support the features
+   * properly (old versions of gcc-2 supported the dead and pure features
+   * in a different (wrong) way).  If we do not provide an implementation
+   * for a given compiler, let the compile fail if it is told to use
+   * a feature that we cannot live without.
+   */
 #ifdef lint
 #define	__dead2
 #define	__pure2
@@ -246,7 +246,7 @@
 #define	__dead2		__attribute__((__noreturn__))
 #define	__pure2		__attribute__((__const__))
 #define	__unused
-/* XXX Find out what to do for __packed, __aligned and __section */
+   /* XXX Find out what to do for __packed, __aligned and __section */
 #endif
 #if __GNUC_PREREQ__(2, 7) || defined(__INTEL_COMPILER)
 #define	__dead2		__attribute__((__noreturn__))
@@ -284,7 +284,7 @@
     __has_extension(cxx_alignas)
 #define	_Alignas(x)		alignas(x)
 #else
-/* XXX: Only emulates _Alignas(constant-expression); not _Alignas(type-name). */
+ /* XXX: Only emulates _Alignas(constant-expression); not _Alignas(type-name). */
 #define	_Alignas(x)		__aligned(x)
 #endif
 #endif
@@ -314,7 +314,7 @@
     __has_extension(cxx_static_assert)
 #define	_Static_assert(x, y)	static_assert(x, y)
 #elif __GNUC_PREREQ__(4,6)
-/* Nothing, gcc 4.6 and higher has _Static_assert built-in */
+ /* Nothing, gcc 4.6 and higher has _Static_assert built-in */
 #elif defined(__COUNTER__)
 #define	_Static_assert(x, y)	__Static_assert(x, __COUNTER__)
 #define	__Static_assert(x, y)	___Static_assert(x, y)
@@ -326,11 +326,11 @@
 #endif
 
 #if !__has_extension(c_thread_local)
-/*
- * XXX: Some compilers (Clang 3.3, GCC 4.7) falsely announce C++11 mode
- * without actually supporting the thread_local keyword. Don't check for
- * the presence of C++11 when defining _Thread_local.
- */
+ /*
+  * XXX: Some compilers (Clang 3.3, GCC 4.7) falsely announce C++11 mode
+  * without actually supporting the thread_local keyword. Don't check for
+  * the presence of C++11 when defining _Thread_local.
+  */
 #if /* (defined(__cplusplus) && __cplusplus >= 201103L) || */ \
     __has_extension(cxx_thread_local)
 #define	_Thread_local		thread_local
@@ -341,14 +341,14 @@
 
 #endif /* __STDC_VERSION__ || __STDC_VERSION__ < 201112L */
 
-/*
- * Emulation of C11 _Generic().  Unlike the previously defined C11
- * keywords, it is not possible to implement this using exactly the same
- * syntax.  Therefore implement something similar under the name
- * __generic().  Unlike _Generic(), this macro can only distinguish
- * between a single type, so it requires nested invocations to
- * distinguish multiple cases.
- */
+  /*
+   * Emulation of C11 _Generic().  Unlike the previously defined C11
+   * keywords, it is not possible to implement this using exactly the same
+   * syntax.  Therefore implement something similar under the name
+   * __generic().  Unlike _Generic(), this macro can only distinguish
+   * between a single type, so it requires nested invocations to
+   * distinguish multiple cases.
+   */
 
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L) || \
     __has_extension(c_generic_selections)
@@ -408,7 +408,7 @@
 #define	__unreachable()	((void)0)
 #endif
 
-/* XXX: should use `#if __STDC_VERSION__ < 199901'. */
+   /* XXX: should use `#if __STDC_VERSION__ < 199901'. */
 #if !__GNUC_PREREQ__(2, 7) && !defined(__INTEL_COMPILER)
 #define	__func__	NULL
 #endif
@@ -427,34 +427,34 @@
 #endif
 #endif
 
-/*
- * GNU C version 2.96 adds explicit branch prediction so that
- * the CPU back-end can hint the processor and also so that
- * code blocks can be reordered such that the predicted path
- * sees a more linear flow, thus improving cache behavior, etc.
- *
- * The following two macros provide us with a way to utilize this
- * compiler feature.  Use __predict_true() if you expect the expression
- * to evaluate to true, and __predict_false() if you expect the
- * expression to evaluate to false.
- *
- * A few notes about usage:
- *
- *	* Generally, __predict_false() error condition checks (unless
- *	  you have some _strong_ reason to do otherwise, in which case
- *	  document it), and/or __predict_true() `no-error' condition
- *	  checks, assuming you want to optimize for the no-error case.
- *
- *	* Other than that, if you don't know the likelihood of a test
- *	  succeeding from empirical or other `hard' evidence, don't
- *	  make predictions.
- *
- *	* These are meant to be used in places that are run `a lot'.
- *	  It is wasteful to make predictions in code that is run
- *	  seldomly (e.g. at subsystem initialization time) as the
- *	  basic block reordering that this affects can often generate
- *	  larger code.
- */
+ /*
+  * GNU C version 2.96 adds explicit branch prediction so that
+  * the CPU back-end can hint the processor and also so that
+  * code blocks can be reordered such that the predicted path
+  * sees a more linear flow, thus improving cache behavior, etc.
+  *
+  * The following two macros provide us with a way to utilize this
+  * compiler feature.  Use __predict_true() if you expect the expression
+  * to evaluate to true, and __predict_false() if you expect the
+  * expression to evaluate to false.
+  *
+  * A few notes about usage:
+  *
+  *	* Generally, __predict_false() error condition checks (unless
+  *	  you have some _strong_ reason to do otherwise, in which case
+  *	  document it), and/or __predict_true() `no-error' condition
+  *	  checks, assuming you want to optimize for the no-error case.
+  *
+  *	* Other than that, if you don't know the likelihood of a test
+  *	  succeeding from empirical or other `hard' evidence, don't
+  *	  make predictions.
+  *
+  *	* These are meant to be used in places that are run `a lot'.
+  *	  It is wasteful to make predictions in code that is run
+  *	  seldomly (e.g. at subsystem initialization time) as the
+  *	  basic block reordering that this affects can often generate
+  *	  larger code.
+  */
 #if __GNUC_PREREQ__(2, 96)
 #define	__predict_true(exp)     __builtin_expect((exp), 1)
 #define	__predict_false(exp)    __builtin_expect((exp), 0)
@@ -477,12 +477,12 @@
 #define	__rangeof(type, start, end) \
 	(__offsetof(type, end) - __offsetof(type, start))
 
-/*
- * Given the pointer x to the member m of the struct s, return
- * a pointer to the containing structure.  When using GCC, we first
- * assign pointer x to a local variable, to check that its type is
- * compatible with member m.
- */
+  /*
+   * Given the pointer x to the member m of the struct s, return
+   * a pointer to the containing structure.  When using GCC, we first
+   * assign pointer x to a local variable, to check that its type is
+   * compatible with member m.
+   */
 #if __GNUC_PREREQ__(3, 1)
 #define	__containerof(x, s, m) ({					\
 	const volatile __typeof(((s *)0)->m) *__x = (x);		\
@@ -493,12 +493,12 @@
 	__DEQUALIFY(s *, (const volatile char *)(x) - __offsetof(s, m))
 #endif
 
-/*
- * Compiler-dependent macros to declare that functions take printf-like
- * or scanf-like arguments.  They are null except for versions of gcc
- * that are known to support the features properly (old versions of gcc-2
- * didn't permit keeping the keywords out of the application namespace).
- */
+   /*
+    * Compiler-dependent macros to declare that functions take printf-like
+    * or scanf-like arguments.  They are null except for versions of gcc
+    * that are known to support the features properly (old versions of gcc-2
+    * didn't permit keeping the keywords out of the application namespace).
+    */
 #if !__GNUC_PREREQ__(2, 7) && !defined(__INTEL_COMPILER)
 #define	__printflike(fmtarg, firstvararg)
 #define	__scanflike(fmtarg, firstvararg)
@@ -517,12 +517,12 @@
 	    __attribute__((__format__ (__strftime__, fmtarg, firstvararg)))
 #endif
 
-/*
- * FORTIFY_SOURCE, and perhaps other compiler-specific features, require
- * the use of non-standard inlining.  In general we should try to avoid
- * using these but GCC-compatible compilers tend to support the extensions
- * well enough to use them in limited cases.
- */ 
+    /*
+     * FORTIFY_SOURCE, and perhaps other compiler-specific features, require
+     * the use of non-standard inlining.  In general we should try to avoid
+     * using these but GCC-compatible compilers tend to support the extensions
+     * well enough to use them in limited cases.
+     */
 #if defined(__GNUC_GNU_INLINE__) || defined(__GNUC_STDC_INLINE__)
 #if __GNUC_PREREQ__(4, 3) || __has_attribute(__artificial__)
 #define	__gnu_inline	__attribute__((__gnu_inline__, __artificial__))
@@ -533,7 +533,7 @@
 #define	__gnu_inline
 #endif
 
-/* Compiler-dependent macros that rely on FreeBSD-specific extensions. */
+     /* Compiler-dependent macros that rely on FreeBSD-specific extensions. */
 #if defined(__FreeBSD_cc_version) && __FreeBSD_cc_version >= 300001 && \
     defined(__GNUC__) && !defined(__INTEL_COMPILER)
 #define	__printf0like(fmtarg, firstvararg) \
@@ -628,7 +628,7 @@
  * Type Safety Checking
  *
  * Clang provides additional attributes to enable checking type safety
- * properties that cannot be enforced by the C type system. 
+ * properties that cannot be enforced by the C type system.
  */
 
 #if __has_attribute(__argument_with_type_tag__) && \
@@ -642,17 +642,17 @@
 #define	__datatype_type_tag(kind, type)
 #endif
 
-/*
- * Lock annotations.
- *
- * Clang provides support for doing basic thread-safety tests at
- * compile-time, by marking which locks will/should be held when
- * entering/leaving a functions.
- *
- * Furthermore, it is also possible to annotate variables and structure
- * members to enforce that they are only accessed when certain locks are
- * held.
- */
+ /*
+  * Lock annotations.
+  *
+  * Clang provides support for doing basic thread-safety tests at
+  * compile-time, by marking which locks will/should be held when
+  * entering/leaving a functions.
+  *
+  * Furthermore, it is also possible to annotate variables and structure
+  * members to enforce that they are only accessed when certain locks are
+  * held.
+  */
 
 #if __has_extension(c_thread_safety_attributes)
 #define	__lock_annotate(x)	__attribute__((x))
@@ -660,7 +660,7 @@
 #define	__lock_annotate(x)
 #endif
 
-/* Structure implements a lock. */
+  /* Structure implements a lock. */
 #define	__lockable		__lock_annotate(lockable)
 
 /* Function acquires an exclusive or shared lock. */

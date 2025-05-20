@@ -16,7 +16,7 @@
 #define H8300 1
 #endif
 
-/* 16 bit integer machines */
+   /* 16 bit integer machines */
 #if defined(__Z8001__) || defined(__Z8002__) || defined(__H8500__) || defined(__W65__) || defined (__mn10200__) || defined (__AVR__)
 
 #undef INT_MAX
@@ -214,7 +214,7 @@
 #  endif /* __alpha__ || sparc64 */
 # endif
 #endif
-/* End of block that should be kept in sync with GCC's limits.h.  */
+   /* End of block that should be kept in sync with GCC's limits.h.  */
 
 #ifndef _POINTER_INT
 #define _POINTER_INT long
@@ -255,9 +255,9 @@
 #ifndef _READ_WRITE_RETURN_TYPE
 #define _READ_WRITE_RETURN_TYPE int
 #endif
-/* Define `count' parameter of read/write routines.  In POSIX, the `count'
-   parameter is "size_t" but legacy newlib code has been using "int" for some
-   time.  If not specified, "int" is defaulted.  */
+   /* Define `count' parameter of read/write routines.  In POSIX, the `count'
+      parameter is "size_t" but legacy newlib code has been using "int" for some
+      time.  If not specified, "int" is defaulted.  */
 #ifndef _READ_WRITE_BUFSIZE_TYPE
 #define _READ_WRITE_BUFSIZE_TYPE int
 #endif
@@ -268,17 +268,17 @@
 #endif
 #endif
 
-/* See if small reent asked for at configuration time and
-   is not chosen by the platform by default.  */
+      /* See if small reent asked for at configuration time and
+         is not chosen by the platform by default.  */
 #ifdef _WANT_REENT_SMALL
 #ifndef _REENT_SMALL
 #define _REENT_SMALL
 #endif
 #endif
 
-/* If _MB_EXTENDED_CHARSETS_ALL is set, we want all of the extended
-   charsets.  The extended charsets add a few functions and a couple
-   of tables of a few K each. */
+         /* If _MB_EXTENDED_CHARSETS_ALL is set, we want all of the extended
+            charsets.  The extended charsets add a few functions and a couple
+            of tables of a few K each. */
 #ifdef _MB_EXTENDED_CHARSETS_ALL
 #define _MB_EXTENDED_CHARSETS_ISO 1
 #define _MB_EXTENDED_CHARSETS_WINDOWS 1
