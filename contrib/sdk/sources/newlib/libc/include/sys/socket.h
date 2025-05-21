@@ -5,7 +5,6 @@
 #include <sys/types.h>
 #include <bits/socket.h>
 #include <bits/sockaddr.h>
-#include <unix_sockets.h>
 
 typedef int socklen_t;
 # define __socklen_t_defined

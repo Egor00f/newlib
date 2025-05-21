@@ -524,6 +524,8 @@ UNIX_SRCS =	basename.c \
 	
 PROCESS_SRCS = getpid.c
 
+CONIO_SRCS = base.c	\
+		conio_repeat.c
 
 INET_SRCS = lnaof.c	\
 		make_addr.c	\
@@ -578,6 +580,8 @@ PRINTF_OBJS= 	stdio/vfprintf.o	\
 
 PROCESS_OBJS = $(patsubst %.c, process/%.o, $(PROCESS_SRCS))
 
+CONIO_OBJS = $(patsubst %.c, process/%.o, $(CONIO_SRCS))
+
 INET_OBJS = $(patsubst %.c, inet/%.o, $(INET_SRCS))
 
 NETDB_OBJS = $(patsubst %.c, netdb/%.o, $(NETDB_SRCS))
@@ -602,6 +606,7 @@ LIB_SRCS+=				\
 		$(POSIX_SRCS)		\
 		$(UNIX_SRCS)	\
 		$(PROCESS_SRCS)	\
+		$(CONIO_SRCS)	\
 		$(INET_SRCS)	\
 		$(NETDB_SRCS)
 
@@ -615,6 +620,7 @@ LIB_OBJS+=				\
 		$(POSIX_OBJS)		\
 		$(UNIX_OBJS)	\
 		$(PROCESS_OBJS)	\
+		$(CONIO_OBJS)	\
 		$(INET_OBJS)	\
 		$(NETDB_OBJS)
 

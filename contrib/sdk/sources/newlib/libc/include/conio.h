@@ -1,7 +1,7 @@
 #ifndef _CONIO_H_
 #define _CONIO_H_
 
-#include <stdint.h>
+#include <stdio.h>
 
 #define CON_WINDOW_CLOSED 0x200
 #define CON_COLOR_BLUE 0x01
@@ -18,7 +18,7 @@
 
 #define CON_IGNORE_SPECIALS 0x100
 
-#define __con_api __attribute__((stdcall)) __attribute__((dllimport))
+#define __con_api //__attribute__((stdcall)) __attribute__((dllimport))
 
 #ifdef __cplusplus
 extern "C"
@@ -46,29 +46,43 @@ extern "C"
     void  __con_api con_set_cursor_pos(int x, int y);
 
 #define kbhit con_kbhit
-#define getch con_getch
 #define gotoxy con_set_cursor_pos
 #define clrscr con_cls
+
+#define _cprintf printf
+#define _cputs(ch) puts(ch, stdout)
+#define _cscanf scanf
 
     enum COLORS {
         /*  dark colors     */
         BLACK,
-        BLUE,
-        GREEN,
-        CYAN,
         RED,
-        MAGENTA,
-        BROWN,
-        LIGHTGRAY,
-        /*  light colors    */
-        DARKGRAY, /* "light black" */
-        LIGHTBLUE,
-        LIGHTGREEN,
-        LIGHTCYAN,
-        LIGHTRED,
-        LIGHTMAGENTA,
+        GREEN,
         YELLOW,
-        WHITE
+        BLUE,
+        MAGENTA,
+        CYAN,
+        WHITE,
+        BROWN = RED,    // Как бы коричневый близок к оранжевому, а оранжевый близок к красному
+        /*  light colors    */
+        DARKGRAY = 10, /* "light black" */
+        LIGHTRED,
+        LIGHTGREEN,
+        LIGHTYELLOW,
+        LIGHTBLUE,
+        LIGHTMAGENTA,
+        LIGHTCYAN,
+
+    };
+
+    enum MODES {
+        BW40,
+        C40,
+        BW80,
+        C80,
+        MONO,
+        C4350 = 64,
+        LASTMODE = -1
     };
 
     struct text_info {
@@ -85,32 +99,33 @@ extern "C"
         unsigned char cury;
     };
 
-    void    blinkvideo(void);
+    void blinkvideo(void);
     char* cgets(char* _str);
-    void    clreol(void);
-    int     cputs(const char* _str);
-    void    delline(void);
-    int     getche(void);
-    int     gettext(int _left, int _top, int _right, int _bottom, void* _destin);
-    void    gettextinfo(struct text_info* _r);
-    void    highvideo(void);
-    void    insline(void);
-    void	intensevideo(void);
-    void    lowvideo(void);
-    int     movetext(int _left, int _top, int _right, int _bottom, int _destleft, int _desttop);
-    void    normvideo(void);
-    int     putch(int _c);
-    int     puttext(int _left, int _top, int _right, int _bottom, void* _source);
-    void    _setcursortype(int _type);
-    void    _set_screen_lines(int _nlines);
-    void    textattr(int _attr);
-    void    textbackground(int _color);
-    void    textcolor(int _color);
-    void    textmode(int _mode);
-    int     ungetch(int);
-    int     wherex(void);
-    int     wherey(void);
-    void    window(int _left, int _top, int _right, int _bottom);
+    void clreol(void);
+    void insline(void);
+    void delline(void);
+    int gettext(int _left, int _top, int _right, int _bottom, void* _destin);
+    void gettextinfo(struct text_info* _r);
+    void highvideo(void);
+    void intensevideo(void);
+    void lowvideo(void);
+    int movetext(int _left, int _top, int _right, int _bottom, int _destleft, int _desttop);
+    void normvideo(void);
+    int putch(int _c);
+    int puttext(int _left, int _top, int _right, int _bottom, void* _source);
+    void setcursortype(int _type);
+    void set_screen_lines(int _nlines);
+    void textattr(int _attr);
+    void textbackground(enum COLORS _color);
+    void textcolor(enum COLORS _color);
+    void textmode(enum MODES _mode);
+    int getch();
+    int getche(void);
+    int ungetch(int);
+    int wherex(void);
+    int wherey(void);
+    char* getpass(const char* str);
+    void window(int _left, int _top, int _right, int _bottom);
 
 #ifdef __cplusplus
 };
