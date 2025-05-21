@@ -61,11 +61,13 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-#include "../mutex.h"
+#include <pthread.h>
 
 //__UCLIBC_MUTEX_STATIC(mylock, PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP);
 
-mutex mylock;
+#if defined(_POSIX_THREADS)
+
+pthread_mutex mylock;
 
 
 #define	MAXALIASES	35
@@ -268,3 +270,5 @@ UNIXSOCKET_FUNC	struct protoent* getprotobynumber(int proto_num)
         SBUFSIZE, &result);
     return result;
 }
+
+#endif

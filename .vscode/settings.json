@@ -3,6 +3,26 @@
         "ksys.h": "c",
         "conio.h": "c",
         "in.h": "c",
-        "socket.h": "c"
+        "socket.h": "c",
+        "pthread.h": "c",
+        "stdio.h": "c",
+        "stddef.h": "c",
+        "stdarg.h": "c",
+        "cdefs.h": "c",
+        "byteorder.h": "c",
+        "types.h": "c",
+        "_ansi.h": "c",
+        "unistd.h": "c",
+        "io.h": "c",
+        "ksys_socket.h": "c",
+        "errno.h": "c",
+        "reent.h": "c",
+        "_types.h": "c",
+        "_default_types.h": "c",
+        "lock.h": "c",
+        "gthr.h": "c",
+        "gthr-default.h": "c",
+        "features.h": "c",
+        "_newlib_version.h": "c"
     }
 }

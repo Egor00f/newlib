@@ -83,28 +83,28 @@ enum
 };
 
 
-UNIXSOCKET_FUNC int socket(int family, int type, int protocol);
-UNIXSOCKET_FUNC int socketpair(int __domain, int __type, int __protocol, int __fds[2]);
-UNIXSOCKET_FUNC int bind(int sockfd, struct sockaddr* umyaddr, int addrlen);
-UNIXSOCKET_FUNC int setsockopt(int sockfd, int level, int option, const void* value, socklen_t value_length);
-UNIXSOCKET_FUNC int getsockopt(int sockfd, int level, int option, void* value, socklen_t value_length);
-UNIXSOCKET_FUNC int accept(int sockfd, struct sockaddr* addr, socklen_t addr_len);
-UNIXSOCKET_FUNC int accept4(int sockfd, struct sockaddr* addr, socklen_t addr_len, int flags);
-UNIXSOCKET_FUNC int connect(int sockfd, const struct sockaddr* uservaddr, int addrlen);
-UNIXSOCKET_FUNC int listen(int sockfd, int backlog);
-UNIXSOCKET_FUNC int shutdown(int sockfd, int how);
+int socket(int family, int type, int protocol);
+int socketpair(int __domain, int __type, int __protocol, int __fds[2]);
+int bind(int sockfd, struct sockaddr* umyaddr, int addrlen);
+int setsockopt(int sockfd, int level, int option, const void* value, socklen_t value_length);
+int getsockopt(int sockfd, int level, int option, void* value, socklen_t value_length);
+int accept(int sockfd, struct sockaddr* addr, socklen_t addr_len);
+int accept4(int sockfd, struct sockaddr* addr, socklen_t addr_len, int flags);
+int connect(int sockfd, const struct sockaddr* uservaddr, int addrlen);
+int listen(int sockfd, int backlog);
+int shutdown(int sockfd, int how);
 
-UNIXSOCKET_FUNC int getsockname(int sockfd, struct sockaddr* usockaddr, int* usockaddr_len);
-UNIXSOCKET_FUNC int getpeername(int sockfd, struct sockaddr* usockaddr, int* usockaddr_len);
+int getsockname(int sockfd, struct sockaddr* usockaddr, int* usockaddr_len);
+int getpeername(int sockfd, struct sockaddr* usockaddr, int* usockaddr_len);
 
-UNIXSOCKET_FUNC ssize_t recv(int sockfd, void* buff, size_t buff_len, int flags);
-UNIXSOCKET_FUNC ssize_t send(int sockfd, const void* buff, size_t buff_len, int flags);
-UNIXSOCKET_FUNC ssize_t sendto(int sockfd, const void* buff, size_t buff_len, int flags, struct sockaddr* addr, socklen_t addr_len);
-UNIXSOCKET_FUNC ssize_t recvfrom(int sockfd, void* buff, size_t buff_len, int flags, struct sockaddr* addr, socklen_t addr_len);
+ssize_t recv(int sockfd, void* buff, size_t buff_len, int flags);
+ssize_t send(int sockfd, const void* buff, size_t buff_len, int flags);
+ssize_t sendto(int sockfd, const void* buff, size_t buff_len, int flags, struct sockaddr* addr, socklen_t addr_len);
+ssize_t recvfrom(int sockfd, void* buff, size_t buff_len, int flags, struct sockaddr* addr, socklen_t addr_len);
 
-UNIXSOCKET_FUNC int recvmmsg(int sockfd, struct mmsghdr* msgs, unsigned int msg_count, int flags, const struct timespec* timeout);
-UNIXSOCKET_FUNC ssize_t recvmsg(int sockfd, struct msghdr* msg, int flags);
-UNIXSOCKET_FUNC int sendmmsg(int sockfd, struct mmsghdr* msgs, int msgs_count, int flags);
-UNIXSOCKET_FUNC int sendmsg(int sockfd, struct msghdr* msg, int flags);
+int recvmmsg(int sockfd, struct mmsghdr* msgs, unsigned int msg_count, int flags, const struct timespec* timeout);
+ssize_t recvmsg(int sockfd, struct msghdr* msg, int flags);
+int sendmmsg(int sockfd, struct mmsghdr* msgs, int msgs_count, int flags);
+int sendmsg(int sockfd, struct msghdr* msg, int flags);
 
 #endif /* SYS_SOCKET_H */

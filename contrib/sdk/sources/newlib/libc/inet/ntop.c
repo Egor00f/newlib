@@ -190,7 +190,7 @@ static const char* inet_ntop6(const u_char* src, char* dst, size_t size)
      */
     if ((size_t)(tp - tmp) > size)
     {
-        errno = ENOSPC ;
+        errno = ENOSPC;
         return NULL;
     }
     return strcpy(dst, tmp);

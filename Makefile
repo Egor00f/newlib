@@ -7,7 +7,7 @@ PackageName = newlib
 
 ALL_PACKAGES = $(PackageName).deb
 
-install shared static:
+install shared static tests:
 	$(MAKE) -C $(PathToLibc) $@
 
 

@@ -3,6 +3,7 @@
 *.dll
 *.obj
 *.deb
+*.kex
 
 newlib/home/
 newlib-dev/home/

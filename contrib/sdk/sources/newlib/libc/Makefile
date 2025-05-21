@@ -1,6 +1,8 @@
 CC = kos32-gcc
 AR = kos32-ar
 LD = kos32-ld
+STRIP	= kos32-strip
+OBJCOPY	= kos32-objcopy
 
 ifeq ($(OS),Windows_NT)
 	TOOLCHAIN_PATH=C:/MinGW/msys/1.0/home/autobuild/tools/win32
@@ -535,6 +537,9 @@ INET_SRCS = lnaof.c	\
 
 NETDB_SRCS = getproto.c
 
+NET_SRCS = net/socket.c	\
+		net/ksys_socket.c
+
 
 STATIC_OBJS =  $(patsubst %.S, %.o, $(patsubst %.c, %.o, $(STATIC_SRCS)))
 
@@ -580,11 +585,13 @@ PRINTF_OBJS= 	stdio/vfprintf.o	\
 
 PROCESS_OBJS = $(patsubst %.c, process/%.o, $(PROCESS_SRCS))
 
-CONIO_OBJS = $(patsubst %.c, process/%.o, $(CONIO_SRCS))
+CONIO_OBJS = $(patsubst %.c, conio/%.o, $(CONIO_SRCS))
 
 INET_OBJS = $(patsubst %.c, inet/%.o, $(INET_SRCS))
 
 NETDB_OBJS = $(patsubst %.c, netdb/%.o, $(NETDB_SRCS))
+
+NET_OBJS =  $(patsubst %.S, %.o, $(patsubst %.c, %.o, $(NET_SRCS)))
 
 ifeq ($(findstring static,$(MAKECMDGOALS)),static)
 
@@ -599,30 +606,32 @@ LIB_OBJS:=  	$(LIBCDLL_OBJS)
 endif
 
 LIB_SRCS+=				\
-		$(CORE_SRCS)		\
-		$(STDIO_SRCS) 		\
-		$(STRING_SRCS)		\
-		$(STDLIB_SRCS)		\
-		$(POSIX_SRCS)		\
+		$(CORE_SRCS)	\
+		$(STDIO_SRCS) 	\
+		$(STRING_SRCS)	\
+		$(STDLIB_SRCS)	\
+		$(POSIX_SRCS)	\
 		$(UNIX_SRCS)	\
 		$(PROCESS_SRCS)	\
 		$(CONIO_SRCS)	\
 		$(INET_SRCS)	\
-		$(NETDB_SRCS)
+		$(NETDB_SRCS)	\
+		$(NET_SRCS)
 
 LIB_OBJS+=				\
-		$(CORE_OBJS) 		\
-		$(STRING_OBJS) 		\
-		$(STDLIB_OBJS)		\
-		$(STDIO_OBJS) 		\
-		$(PRINTF_OBJS)		\
-		$(MATH_OBJS)		\
-		$(POSIX_OBJS)		\
+		$(CORE_OBJS) 	\
+		$(STRING_OBJS) 	\
+		$(STDLIB_OBJS)	\
+		$(STDIO_OBJS) 	\
+		$(PRINTF_OBJS)	\
+		$(MATH_OBJS)	\
+		$(POSIX_OBJS)	\
 		$(UNIX_OBJS)	\
 		$(PROCESS_OBJS)	\
 		$(CONIO_OBJS)	\
 		$(INET_OBJS)	\
-		$(NETDB_OBJS)
+		$(NETDB_OBJS)	\
+		$(NET_OBJS)
 
 LIB_OBJS+= time/wcsftime.o
 
@@ -635,10 +644,12 @@ $(NAME).dll: $(LIB_OBJS) $(SRC_DEP) Makefile
 #sed -f cmd2.sed libc.def > mem
 #sed -f newlib.sed mem > libc.inc
 
+$(NAME).dll.a: $(NAME).dll
+
 install: libc.dll libc.dll.a libdll.a
-	mv -f libc.a $(INSTALLDIR)
-	mv -f libc.dll.a $(INSTALLDIR)/lib
-	mv -f libdll.a $(INSTALLDIR)/lib
+	cp -f libc.a $(INSTALLDIR)
+	cp -f libc.dll.a $(INSTALLDIR)/lib
+	cp -f libdll.a $(INSTALLDIR)/lib
 
 libdll.a: $(LIBDLL_OBJS) Makefile
 	$(AR) $(ARFLAGS) libdll.a $(LIBDLL_OBJS)
@@ -718,10 +729,73 @@ time/wcsftime.o: time/strftime.c
 %.o : %.S Makefile
 	$(CC) $(CFLAGS) $(DEFINES) $(INCLUDES) -o $@ $<
 
-
 clean:
 	-rm -f */*.o
 
+tests: test-conio.kex test-net_client.kex
 
+tests/conio.o: tests/conio.c ./include/conio.h
+	$(CC) -c -O2 -fno-ident -fomit-frame-pointer  -U__WIN32__ -U_Win32 -U_WIN32 -U__MINGW32__ -UWIN32 -I include -o $@ tests/conio.c
+
+tests/net_client.o: tests/net_client.c ./include/netinet/in.h ./include/arpa/inet.h ./include/stdio.h ./include/stdlib.h ./include/unistd.h ./include/string.h
+	$(CC) -c -O2 -fno-ident -fomit-frame-pointer  -U__WIN32__ -U_Win32 -U_WIN32 -U__MINGW32__ -UWIN32 -I include -o $@ tests/net_client.c
+
+test-conio.kex:	tests/conio.o $(NAME).dll
+	$(LD) --image-base 0 -Tapp-dynamic.lds -o $@ $< -lgcc $(NAME).dll -ldll
+	$(STRIP) -S test-conio.kex
+	$(OBJCOPY) test-conio.kex -O binary
+
+test-net_client.kex:	tests/net_client.o $(NAME).dll
+	$(LD) --image-base 0 -Tapp-dynamic.lds -o $@ $< -lgcc $(NAME).dll -ldll
+	$(STRIP) -S $@
+	$(OBJCOPY) $@ -O binary
+
+
+
+./include/stdio.h: ./include/sys/reent.h ./include/sys/types.h ./include/sys/cdefs.h ./include/sys/stdio.h
+./include/string.h: ./include/sys/reent.h ./include/sys/cdefs.h ./include/sys/features.h
+./include/conio.h: ./include/stdio.h
+./include/errno.h: ./include/sys/errno.h
+./include/reent.h: ./include/_ansi.h ./include/sys/_types.h
+./include/_ansi.h: ./include/newlib.h ./include/sys/config.h
+
+
+./include/sys/types.h: ./include/sys/cdefs.h ./include/machine/_types.h
+./include/sys/features.h: ./include/_newlib_version.h
+./include/sys/cdefs.h: ./include/sys/features.h ./include/machine/_default_types.h
+./include/sys/errno.h: ./include/sys/reent.h
+./include/sys/_types.h: ./include/machine/_types.h ./include/sys/lock.h
+./include/sys/lock.h: ./include/sys/cdefs.h ./include/sys/gthr.h
+./include/sys/gthr.h: ./include/sys/gthr-default.h
+./include/sys/socket.h: ./include/sys/types.h ./include/bits/socket.h ./include/bits/sockaddr.h
+./include/sys/ksys_socket.h: ./include/sys/ksys.h ./include/bits/socket.h
+
+./include/machine/_default_types.h: ./include/sys/features.h
+./include/machine/_types.h: ./include/machine/_default_types.h
+
+./include/bits/socket.h: ./include/bits/socket_type.h
+
+./include/arpa/inet.h: ./include/netinet/in.h ./include/kolibri_network.h
+./include/arpa/nameser.h: ./include/sys/param.h ./include/sys/bitypes.h ./include/sys/types.h ./include/sys/cdefs.h
+
+./include/net/if.h: ./include/sys/types.h ./include/sys/socket.h
+
+./include/netinet/in.h: ./include/asm/byteorder.h ./include/sys/socket.h
+./include/netinet/icmp6.h: ./include/intypes.h ./include/string.h ./include/sys/types.h ./include/netinet/in.h
+./include/netinet/ip_icmp.h: ./include/sys/cdefs.h ./include/types.h
+./include/netinet/ip.h: ./include/sys/types.h ./include/netinet/in.h
+./include/netinet/ip6.h: ./include/inttypes.h ./include/netinet/in.h
+./include/netinet/tcp.h: ./include/inttypes.h ./include/sys/cdefs.h
+./include/netinet/upd.h: ./include/sys/cdefs.h ./include/sys/types.h
+
+conio/base.o: conio/base.c ./include/conio.h ./include/sys/ksys.h
+conio/conio_repeat.o: conio/conio_repeat.c ./include/conio.h
+
+inet/inet/lnaof.o: inet/inet/lnaof.c ./include/sys/param.h ./include/sys/types.h ./include/sys/socket.h ./include/netinet/in.h ./include/arpa/inet.h ./include/arpa/nameser.h ./include/errno.h ./include/stdio.h ./include/string.h ./include/ctype.h
+
+netdb/getproto.o: ./include/sys/features.h ./include/sys/types.h ./include/sys/socket.h ./include/netdb.h ./include/stdio.h ./include/stdlib.h ./include/string.h ./include/errno.h ./include/unistd.h ./include/pthread.h
+
+net/socket.o: net/socket.c ./include/sys/socket.h ./include/sys/ksys_socket.h ./include/stdlib.h
+net/ksys_socket.o: net/ksys_socket.c ./include/sys/ksys_socket.h ./include/errno.h
 
 

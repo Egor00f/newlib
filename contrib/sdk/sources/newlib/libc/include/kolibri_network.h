@@ -43,10 +43,10 @@ struct addrinfo
 	struct addrinfo* ai_next;
 };
 
-UNIXSOCKET_FUNC int	networklib_init();
-UNIXSOCKET_FUNC int	(*inet_addr)(const char* hostname) __attribute__((stdcall));
-UNIXSOCKET_FUNC char* (*inet_ntoa)(int ip_addr) __attribute__((stdcall));
-UNIXSOCKET_FUNC int	(*getaddrinfo)(char* hostname, char* servname, struct addrinfo* hints, struct addrinfo** res) __attribute__((stdcall));
-UNIXSOCKET_FUNC void	(*freeaddrinfo)(struct addrinfo* ai) __attribute__((stdcall));
+int	networklib_init();
+int	(*inet_addr)(const char* hostname) __attribute__((stdcall));
+char* (*inet_ntoa)(int ip_addr) __attribute__((stdcall));
+int	(*getaddrinfo)(char* hostname, char* servname, struct addrinfo* hints, struct addrinfo** res) __attribute__((stdcall));
+void	(*freeaddrinfo)(struct addrinfo* ai) __attribute__((stdcall));
 
 #endif

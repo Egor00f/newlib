@@ -9,6 +9,16 @@
             "compilerPath": "C:/MinGW/msys/1.0/home/autobuild/tools/win32/bin/kos32-gcc.exe",
             "cStandard": "c11",
             "intelliSenseMode": "gcc-x86"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/contrib/sdk/sources/newlib/libc/include",
+                "/home/autobuild/tools/win32/lib/gcc/mingw32/5.4.0/include"
+            ],
+            "compilerPath": "/home/autobuild/tools/win32/bin/kos32-gcc",
+            "cStandard": "c11",
+            "intelliSenseMode": "gcc-x86"
         }
     ],
     "version": 4

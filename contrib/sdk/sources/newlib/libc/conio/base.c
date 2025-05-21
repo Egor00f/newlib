@@ -4,123 +4,151 @@
 
 void clreol()
 {
-    int x, y;
+	int x, y;
 
-    con_get_cursor_pos(&x, &y);
-    clrscr();
-    gotoxy(x, y);
+	con_get_cursor_pos(&x, &y);
+	clrscr();
+	gotoxy(x, y);
 }
 
 int wherex()
 {
-    int x, y;
+	int x, y;
 
-    con_get_cursor_pos(&x, &y);
+	con_get_cursor_pos(&x, &y);
 
-    return x;
+	return x;
 }
 
 int wherey()
 {
-    int x, y;
+	int x, y;
 
-    con_get_cursor_pos(&x, &y);
+	con_get_cursor_pos(&x, &y);
 
-    return y;
+	return y;
 }
 
 void insline()
 {
-    fputc('\n', stdout);
+	fputc('\n', stdout);
 }
 
 int getch()
 {   // потом какнибудь сделаю реализацию для работы ungetch
-    return con_getch();
+	return con_getch();
+}
+
+int getche()
+{
+	int ch = getch();
+	putc(ch, stdout);
+
+	return ch;
 }
 
 int ungetch(int ch)
 {
-    /*
-        Невозможно на данный момент
-    */
+	/*
+		Невозможно на данный момент
+	*/
 }
 
 
-static uint8_t colors = (BLACK << 4) | WHITE;
+static uint8_t attributes = (BLACK << 4) | WHITE;
 
 void textbackground(enum COLORS _color)
 {
-    /*
-        смотрим enum COLORS и доку к консоли. Коды 40 - 47 коды простых цветов
-    */
-    if (_color >= 7)
-    {
-        printf("\033[4%dm", _color);
-    }
-    else
-    {
-        _color -= 10;
-        printf("\033[4%d;5m", _color);  // яркий фон... да-да..
-    }
+	/*
+		смотрим enum COLORS и доку к консоли. Коды 40 - 47 коды простых цветов
+	*/
+	if (_color <= 7)
+	{
+		printf("\033[4%dm", _color);
+	}
+	else
+	{
+		printf("\033[4%d;5m", _color - 10);  // яркий фон... да-да..
+	}
 
-    colors = (_color << 4) | (colors & 0b1111);
+	attributes = (_color << 4) | (attributes & 0b1111);
 }
 
 void textcolor(enum COLORS _color)
 {
-    /*
-        смотрим enum COLORS и доку к консоли. Коды 30 - 37 коды простых цветов
-    */
-    if (_color >= 7)
-    {
-        printf("\033[3%dm", _color);
-    }
-    else
-    {
-        _color -= 10;
-        printf("\033[3%d;1m", _color);
-    }
+	/*
+		смотрим enum COLORS и доку к консоли. Коды 30 - 37 коды простых цветов
+	*/
+	if (_color <= 7)
+	{
+		printf("\033[3%dm", _color);
+	}
+	else
+	{
+		printf("\033[3%d;1m", _color - 10);
+	}
 
-    colors |= (colors << 4) | (_color & 0b1111);
+	attributes |= (attributes << 4) | (_color & 0b1111);
 }
 
 void textattr(int _attr)
 {
-    textcolor(_attr & 0b00001111);
-    textbackground(_attr & 0b01110000);
+	textcolor(_attr & 0b00001111);
+	textbackground(_attr >> 4);
+}
+
+void gettextinfo(struct text_info* _r)
+{
+	con_get_cursor_pos(&_r->curx, &_r->cury);
+	_r->screenwidth = 80;
+	_r->attribute = attributes;
+	_r->normattr = (BLACK << 4) | WHITE;
 }
 
 void highvideo()
 {
-    puts("\033[1m", stdout);
+	puts("\033[1m");
 }
 
 void lowvideo()
 {
-    puts("\033[0m", stdout);
-    textattr(colors);
+	puts("\033[0m");
+
+	uint8_t back = (attributes << 4);
+	uint8_t text = (attributes & 0b1111);
+
+	if (back > 7)   // нафиг интенсивные цвета
+		back -= 10; // см enum COLORS, там интенсивные цвета начинаются с 10
+	if (text > 7)
+		text -= 10;
+
+	textattr(text | (back << 4));
+}
+
+void normvideo(void)
+{
+	puts("\033[0m");
 }
 
 char* getpass(const char* str)
 {
-    printf("%s: ", str);
+	printf("%s: ", str);
 
-    static char psswd[9];
+	static char psswd[9];
 
-    for (uint8_t i = 0; i <= 8; i++)
-    {
-        char a = getch();
-        if (a != '\n')
-        {
-            psswd[i] = a;
-        }
-        else
-        {
-            psswd[i] = 0;
-            break;
-        }
-    }
+	for (uint8_t i = 0; i <= 8; i++)
+	{
+		char a = getch();
+		if (a != '\n')
+		{
+			psswd[i] = a;
+		}
+		else
+		{
+			psswd[i] = 0;
+			break;
+		}
+	}
 
-    return psswd;
+	return psswd;
 }

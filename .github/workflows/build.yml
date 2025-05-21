@@ -38,3 +38,13 @@ jobs:
             ./contrib/sdk/sources/newlib/libc/libc.dll
             ./contrib/sdk/sources/newlib/libc/libc.dll.a
             ./newlib.deb
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: egor00f/install-kolibrios-toolchain-action@v1.1
+      
+      - name: Static build
+        run: make tests
+
