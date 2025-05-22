@@ -21,6 +21,7 @@
 #define __con_api __stdcall
 
 _BEGIN_STD_C
+
 typedef int (*con_gets2_callback)(int keycode, char** pstr, int* pn, int* ppos);
 
 struct text_info {
@@ -91,6 +92,7 @@ extern void __stdcall  con_set_cursor_pos(int x, int y);
 #define kbhit con_kbhit
 #define gotoxy con_set_cursor_pos
 #define clrscr con_cls
+#define wherexy con_get_cursor_pos
 
 #define _cprintf printf
 #define _cputch(ch) putc(ch, stdout)
@@ -99,7 +101,6 @@ extern void __stdcall  con_set_cursor_pos(int x, int y);
 #define _cgets gets
 
 void blinkvideo(void);
-char* cgets(char* _str);
 void clreol(void);
 void insline(void);
 void delline(void);

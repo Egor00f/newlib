@@ -30,15 +30,15 @@ SEFINES+= -DPACKAGE_STRING=\"newlib\ 2.4.0\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_
 
 INCLUDES:=  -I $(LIBC_INCLUDES)
 
-STATIC_SRCS:=					\
-         		crt/start.S		\
-         		crt/crt1.c		\
+STATIC_SRCS:=				\
+			crt/start.S		\
+			crt/crt1.c		\
 			crt/crt2.c		\
-         		crt/exit.S
+			crt/exit.S
 
 LIBDLL_SRCS:=					\
-			crt/dllstart.c 		\
-         		crt/exit.S           	\
+			crt/dllstart.c  	\
+			crt/exit.S      	\
 			crt/pseudo-reloc.c	\
 			crt/setjmp.S
 
@@ -52,52 +52,52 @@ LIBCDLL_SRCS:=					\
 
 CORE_SRCS:=                   			\
 			argz/buf_findstr.c	\
-			argz/envz_get.c		\
-			crt/console.asm		\
+			argz/envz_get.c 	\
+			crt/console.asm 	\
 			crt/gthr-kos32.c	\
-			crt/thread.S         	\
+			crt/thread.S    	\
 			crt/setjmp.S		\
 			crt/cpu_features.c	\
 			crt/tls.c		\
 			ctype/ctype_.c 		\
 			ctype/isascii.c		\
 			ctype/isblank.c		\
-			ctype/isalnum.c      	\
-			ctype/isalpha.c      	\
-			ctype/iscntrl.c      	\
-			ctype/isdigit.c      	\
-			ctype/islower.c      	\
-			ctype/isupper.c      	\
-			ctype/isprint.c      	\
-			ctype/ispunct.c      	\
-			ctype/isspace.c      	\
-			ctype/iswctype.c     	\
-			ctype/iswalnum.c     	\
-			ctype/iswalpha.c     	\
-			ctype/iswblank.c     	\
-			ctype/iswcntrl.c     	\
-    		ctype/iswdigit.c     	\
-    		ctype/iswgraph.c     	\
-    		ctype/iswlower.c     	\
-    		ctype/iswprint.c     	\
-    		ctype/iswpunct.c     	\
-    		ctype/iswspace.c     	\
-    		ctype/iswupper.c     	\
-    		ctype/iswxdigit.c    	\
-    		ctype/isxdigit.c     	\
+			ctype/isalnum.c    	\
+			ctype/isalpha.c    	\
+			ctype/iscntrl.c    	\
+			ctype/isdigit.c    	\
+			ctype/islower.c    	\
+			ctype/isupper.c    	\
+			ctype/isprint.c    	\
+			ctype/ispunct.c 	\
+			ctype/isspace.c 	\
+			ctype/iswctype.c	\
+			ctype/iswalnum.c	\
+			ctype/iswalpha.c	\
+			ctype/iswblank.c	\
+			ctype/iswcntrl.c	\
+			ctype/iswdigit.c	\
+			ctype/iswgraph.c	\
+			ctype/iswlower.c	\
+			ctype/iswprint.c	\
+			ctype/iswpunct.c	\
+			ctype/iswspace.c	\
+			ctype/iswupper.c   	\
+			ctype/iswxdigit.c  	\
+			ctype/isxdigit.c	\
 			ctype/jp2uc.c		\
 			ctype/toascii.c		\
-			ctype/tolower.c      	\
+			ctype/tolower.c 	\
 			ctype/toupper.c		\
-			ctype/towctrans.c    	\
-			ctype/towlower.c     	\
-			ctype/towupper.c     	\
+			ctype/towctrans.c	\
+			ctype/towlower.c	\
+			ctype/towupper.c	\
 			ctype/wctrans.c		\
-			ctype/wctype.c       	\
-			errno/errno.c        	\
-			locale/locale.c		\
-			locale/lctype.c		\
-			locale/ldpart.c		\
+			ctype/wctype.c  	\
+			errno/errno.c   	\
+			locale/locale.c 	\
+			locale/lctype.c 	\
+			locale/ldpart.c 	\
 			reent/closer.c       	\
 			reent/fstatr.c       	\
 			reent/getreent.c     	\
@@ -139,109 +139,112 @@ CORE_SRCS:=                   			\
 			sys/write.c          	\
 			sys/io_alloc.S		\
 			sys/ftruncate.c		\
+			sys/socket.c        	\
+			sys/ksys_socket.c   	\
 			time/asctime.c       	\
-			time/asctime_r.c     	\
-			time/clock.c         	\
-			time/ctime.c         	\
-			time/ctime_r.c       	\
-			time/difftime.c		\
+			time/asctime_r.c    	\
+			time/clock.c        	\
+			time/ctime.c        	\
+			time/ctime_r.c      	\
+			time/difftime.c     	\
 			time/gettzinfo.c     	\
 			time/gmtime.c        	\
-			time/gmtime_r.c		\
+			time/gmtime_r.c     	\
 			time/mktime.c        	\
 			time/month_lengths.c	\
-			time/lcltime.c       	\
-			time/lcltime_r.c     	\
-			time/strftime.c		\
-			time/time.c          	\
+			time/lcltime.c      	\
+			time/lcltime_r.c    	\
+			time/strftime.c     	\
+			time/time.c         	\
 			time/tzcalc_limits.c	\
-			time/timelocal.c	\
-			time/tzlock.c        	\
-			time/tzset.c		\
-			time/tzset_r.c		\
-			time/tzvars.c
+			time/timelocal.c    	\
+			time/tzlock.c       	\
+			time/tzset.c        	\
+			time/tzset_r.c      	\
+			time/tzvars.c       	\
 
-STDLIB_SRCS=                 			\
-    		__atexit.c          	\
-    		__call_atexit.c     	\
-    		abort.c              	\
-    		abs.c               	\
-			assert.c		\
-			atexit.c		\
-    		atof.c              	\
-    		atoi.c              	\
-			atol.c			\
-			btowc.c			\
-    		calloc.c             	\
-			cxa_atexit.c		\
-			cxa_finalize.c		\
-    		div.c               	\
-    		dtoa.c               	\
-    		dtoastub.c          	\
-			efgcvt.c		\
-			ecvtbuf.c		\
-			eprintf.c		\
-			erand48.c		\
-    		exit.c              	\
-    		gdtoa-gethex.c      	\
-    		gdtoa-hexnan.c       	\
-    		getenv.c             	\
-    		envlock.c             	\
-			getenv_r.c		\
-			itoa.c			\
-			ldiv.c			\
-			labs.c			\
-			ldtoa.c			\
-         		malloc.c             	\
-        		mallocr.c           	\
-			mblen.c			\
-			mblen_r.c		\
-			mbrlen.c		\
-         		mbrtowc.c           	\
-			mbsinit.c		\
-			mbsnrtowcs.c		\
-			mbsrtowcs.c		\
-			mbstowcs.c		\
-			mbstowcs_r.c		\
-			mbtowc.c		\
-			mbtowc_r.c		\
-         		mlock.c              	\
-         		mprec.c              	\
-        		rand.c               	\
-         		rand_r.c            	\
-         		rand48.c            	\
-			random.c		\
-         		realloc.c            	\
-			sb_charsets.c		\
-         		seed48.c             	\
-         		srand48.c            	\
-         		strtod.c            	\
-			strtodg.c		\
-         		strtol.c             	\
-         		strtold.c            	\
-         		strtoll.c            	\
-         		strtoll_r.c         	\
-			strtorx.c		\
-         		strtoul.c            	\
-         		strtoull.c           	\
-         		strtoull_r.c        	\
-         		system.c            	\
-			utoa.c			\
-         		wcrtomb.c           	\
-			wcsnrtombs.c		\
-			wcsrtombs.c		\
-			wcstod.c		\
-			wcstol.c		\
-			wcstold.c		\
-			wcstoll.c		\
-			wcstoll_r.c		\
-			wcstombs.c		\
-			wcstombs_r.c		\
-			wcstoul.c		\
-			wcstoull.c		\
-			wcstoull_r.c		\
-			wctob.c			\
-			wctomb.c		\
+
+STDLIB_SRCS =           	\
+			__atexit.c  	\
+			__call_atexit.c	\
+			abort.c     	\
+			abs.c       	\
+			assert.c    	\
+			atexit.c    	\
+			atof.c      	\
+			atoi.c      	\
+			atol.c      	\
+			btowc.c     	\
+			calloc.c    	\
+			cxa_atexit.c	\
+			cxa_finalize.c	\
+			div.c       	\
+			dtoa.c      	\
+			dtoastub.c  	\
+			efgcvt.c    	\
+			ecvtbuf.c   	\
+			eprintf.c   	\
+			erand48.c   	\
+			exit.c      	\
+			gdtoa-gethex.c	\
+			gdtoa-hexnan.c	\
+			getenv.c    	\
+			envlock.c   	\
+			getenv_r.c  	\
+			itoa.c      	\
+			ldiv.c      	\
+			labs.c      	\
+			ldtoa.c     	\
+			malloc.c    	\
+			mallocr.c   	\
+			mblen.c     	\
+			mblen_r.c   	\
+			mbrlen.c    	\
+			mbrtowc.c   	\
+			mbsinit.c   	\
+			mbsnrtowcs.c	\
+			mbsrtowcs.c 	\
+			mbstowcs.c  	\
+			mbstowcs_r.c	\
+			mbtowc.c    	\
+			mbtowc_r.c  	\
+		 	mlock.c     	\
+		 	mprec.c     	\
+			rand.c      	\
+		 	rand_r.c    	\
+		 	rand48.c    	\
+			random.c    	\
+		 	realloc.c   	\
+			sb_charsets.c	\
+		 	seed48.c    	\
+		 	srand48.c   	\
+		 	strtod.c    	\
+			strtodg.c   	\
+		 	strtol.c    	\
+		 	strtold.c   	\
+		 	strtoll.c   	\
+		 	strtoll_r.c 	\
+			strtorx.c   	\
+		 	strtoul.c   	\
+		 	strtoull.c  	\
+			strtoull_r.c	\
+			system.c    	\
+			utoa.c      	\
+			wcrtomb.c   	\
+			wcsnrtombs.c	\
+			wcsrtombs.c 	\
+			wcstod.c    	\
+			wcstol.c    	\
+			wcstold.c   	\
+			wcstoll.c   	\
+			wcstoll_r.c 	\
+			wcstombs.c  	\
+			wcstombs_r.c	\
+			wcstoul.c   	\
+			wcstoull.c  	\
+			wcstoull_r.c	\
+			wctob.c     	\
+			wctomb.c    	\
 			wctomb_r.c
 
 
@@ -368,7 +371,7 @@ STDIO_SRCS=					\
 			flags.c			\
 			fmemopen.c		\
 			fopen.c			\
-			fopencookie.c		\
+			fopencookie.c	\
 			fprintf.c		\
 			fpurge.c		\
 			fputc.c			\
@@ -387,7 +390,7 @@ STDIO_SRCS=					\
 			fscanf.c		\
 			fseek.c			\
 			fseeko.c		\
-			fsetlocking.c		\
+			fsetlocking.c	\
 			ftell.c			\
 			ftello.c		\
 			fvwrite.c		\
@@ -513,21 +516,24 @@ MATH_SRCS = 	e_acos.c e_acosh.c e_asin.c e_atan2.c e_atanh.c e_cosh.c e_exp.c e_
 		f_log10.S f_log10f.S f_logf.S f_tan.S f_tanf.S
 
 
-POSIX_SRCS =	opendir.c \
-		closedir.c \
-		readdir.c \
-		seekdir.c \
-		telldir.c \
+POSIX_SRCS = opendir.c \
+		closedir.c	\
+		readdir.c	\
+		seekdir.c	\
+		telldir.c	\
 		rewinddir.c
 
-UNIX_SRCS =	basename.c \
-		dirname.c \
+UNIX_SRCS =	basename.c	\
+		dirname.c	\
 		getcwd.c	\
 	
 PROCESS_SRCS = getpid.c
 
 CONIO_SRCS = base.c	\
 		conio_repeat.c
+
+TERMIOS_SRCS = tcgetattr.c	\
+		tcsetattr.c
 
 INET_SRCS = lnaof.c	\
 		make_addr.c	\
@@ -536,9 +542,6 @@ INET_SRCS = lnaof.c	\
 		ntop.c	
 
 NETDB_SRCS = getproto.c
-
-NET_SRCS = net/socket.c	\
-		net/ksys_socket.c
 
 
 STATIC_OBJS =  $(patsubst %.S, %.o, $(patsubst %.c, %.o, $(STATIC_SRCS)))
@@ -550,29 +553,29 @@ LIBDLL_OBJS =  $(patsubst %.S, %.o, $(patsubst %.c, %.o, $(LIBDLL_SRCS)))
 LIBCDLL_OBJS =  $(patsubst %.S, %.o, $(patsubst %.c, %.o, $(LIBCDLL_SRCS)))
 
 CORE_OBJS =  $(patsubst %.S, %.o, $(patsubst %.asm, %.obj,\
-            $(patsubst %.c, %.o, $(CORE_SRCS))))
+			$(patsubst %.c, %.o, $(CORE_SRCS))))
 
 STDIO_OBJS =  $(patsubst %.c, stdio/%.o,$(STDIO_SRCS))
 
 
 STRING_OBJS =  $(patsubst %.S, string/%.o, $(patsubst %.asm, string/%.o,\
-               $(patsubst %.c, string/%.o, $(STRING_SRCS))))
+			   $(patsubst %.c, string/%.o, $(STRING_SRCS))))
 
 STDLIB_OBJS =  $(patsubst %.S, stdlib/%.o, $(patsubst %.asm, stdlib/%.o,\
-               $(patsubst %.c, stdlib/%.o, $(STDLIB_SRCS))))
+			   $(patsubst %.c, stdlib/%.o, $(STDLIB_SRCS))))
 
 MATH_OBJS =  $(patsubst %.S, math/%.o, $(patsubst %.asm, math/%.o,\
-               $(patsubst %.c, math/%.o, $(MATH_SRCS))))
+			   $(patsubst %.c, math/%.o, $(MATH_SRCS))))
 
 POSIX_OBJS =  $(patsubst %.c, posix/%.o, $(POSIX_SRCS))
 
 UNIX_OBJS = $(patsubst %.c, unix/%.o, $(UNIX_SRCS))
 
-PRINTF_OBJS= 	stdio/vfprintf.o	\
+PRINTF_OBJS = stdio/vfprintf.o	\
 		stdio/vfiprintf.o	\
 		stdio/svfprintf.o	\
 		stdio/svfiprintf.o	\
-		stdio/svfiwprintf.o 	\
+		stdio/svfiwprintf.o	\
 		stdio/svfwprintf.o	\
 		stdio/vfiwprintf.o	\
 		stdio/vfwprintf.o	\
@@ -587,25 +590,25 @@ PROCESS_OBJS = $(patsubst %.c, process/%.o, $(PROCESS_SRCS))
 
 CONIO_OBJS = $(patsubst %.c, conio/%.o, $(CONIO_SRCS))
 
+TERMIOS_OBJS = $(patsubst %.c, termios/%.o, $(TERMIOS_SRCS))
+
 INET_OBJS = $(patsubst %.c, inet/%.o, $(INET_SRCS))
 
 NETDB_OBJS = $(patsubst %.c, netdb/%.o, $(NETDB_SRCS))
 
-NET_OBJS =  $(patsubst %.S, %.o, $(patsubst %.c, %.o, $(NET_SRCS)))
-
 ifeq ($(findstring static,$(MAKECMDGOALS)),static)
 
-LIB_SRCS:=  	$(STATIC_SRCS)
-LIB_OBJS:=  	$(STATIC_OBJS)
+LIB_SRCS :=  	$(STATIC_SRCS)
+LIB_OBJS :=  	$(STATIC_OBJS)
 
 else
 
-LIB_SRCS:=  	$(LIBCDLL_SRCS)
-LIB_OBJS:=  	$(LIBCDLL_OBJS)
+LIB_SRCS :=	$(LIBCDLL_SRCS)
+LIB_OBJS :=	$(LIBCDLL_OBJS)
 
 endif
 
-LIB_SRCS+=				\
+LIB_SRCS +=				\
 		$(CORE_SRCS)	\
 		$(STDIO_SRCS) 	\
 		$(STRING_SRCS)	\
@@ -614,11 +617,11 @@ LIB_SRCS+=				\
 		$(UNIX_SRCS)	\
 		$(PROCESS_SRCS)	\
 		$(CONIO_SRCS)	\
+		$(TERMIOS_SRCS)	\
 		$(INET_SRCS)	\
 		$(NETDB_SRCS)	\
-		$(NET_SRCS)
 
-LIB_OBJS+=				\
+LIB_OBJS +=				\
 		$(CORE_OBJS) 	\
 		$(STRING_OBJS) 	\
 		$(STDLIB_OBJS)	\
@@ -629,11 +632,11 @@ LIB_OBJS+=				\
 		$(UNIX_OBJS)	\
 		$(PROCESS_OBJS)	\
 		$(CONIO_OBJS)	\
+		$(TERMIOS_OBJS)	\
 		$(INET_OBJS)	\
 		$(NETDB_OBJS)	\
-		$(NET_OBJS)
 
-LIB_OBJS+= time/wcsftime.o
+LIB_OBJS += time/wcsftime.o
 
 shared: $(NAME).dll libdll.a
 
@@ -790,6 +793,9 @@ test-net_client.kex:	tests/net_client.o $(NAME).dll
 
 conio/base.o: conio/base.c ./include/conio.h ./include/sys/ksys.h
 conio/conio_repeat.o: conio/conio_repeat.c ./include/conio.h
+
+termios/tcgetattr.o: termios/tcgetattr.c 
+termios/tcsetattr.o: termios/tcsetattr.c
 
 inet/inet/lnaof.o: inet/inet/lnaof.c ./include/sys/param.h ./include/sys/types.h ./include/sys/socket.h ./include/netinet/in.h ./include/arpa/inet.h ./include/arpa/nameser.h ./include/errno.h ./include/stdio.h ./include/string.h ./include/ctype.h
 

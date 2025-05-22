@@ -31,12 +31,13 @@ int wherey()
 
 void insline()
 {
-	fputc('\n', stdout);
+	putc('\n', stdout);
+	fflush(stdout);
 }
 
 int getch()
 {   // потом какнибудь сделаю реализацию для работы ungetch
-	return con_getch();
+	return getc(stdin);
 }
 
 int getche()
@@ -49,13 +50,11 @@ int getche()
 
 int ungetch(int ch)
 {
-	/*
-		Невозможно на данный момент
-	*/
+	return ungetc(ch, stdin);
 }
 
 
-static uint8_t attributes = (BLACK << 4) | WHITE;
+int __conio_attributes = (BLACK << 4) | WHITE;
 
 void textbackground(enum COLORS _color)
 {
@@ -71,7 +70,7 @@ void textbackground(enum COLORS _color)
 		printf("\033[4%d;5m", _color - 10);  // яркий фон... да-да..
 	}
 
-	attributes = (_color << 4) | (attributes & 0b1111);
+	__conio_attributes = (_color << 4) | (__conio_attributes & 0b1111);
 }
 
 void textcolor(enum COLORS _color)
@@ -88,7 +87,7 @@ void textcolor(enum COLORS _color)
 		printf("\033[3%d;1m", _color - 10);
 	}
 
-	attributes |= (attributes << 4) | (_color & 0b1111);
+	__conio_attributes |= (__conio_attributes << 4) | (_color & 0b1111);
 }
 
 void textattr(int _attr)
@@ -101,7 +100,7 @@ void gettextinfo(struct text_info* _r)
 {
 	con_get_cursor_pos(&_r->curx, &_r->cury);
 	_r->screenwidth = 80;
-	_r->attribute = attributes;
+	_r->attribute = __conio_attributes;
 	_r->normattr = (BLACK << 4) | WHITE;
 }
 
@@ -112,10 +111,10 @@ void highvideo()
 
 void lowvideo()
 {
-	puts("\033[0m");
+	con_("\033[0m");
 
-	uint8_t back = (attributes << 4);
-	uint8_t text = (attributes & 0b1111);
+	uint8_t back = (__conio_attributes << 4);
+	uint8_t text = (__conio_attributes & 0b1111);
 
 	if (back > 7)   // нафиг интенсивные цвета
 		back -= 10; // см enum COLORS, там интенсивные цвета начинаются с 10
@@ -133,6 +132,7 @@ void normvideo(void)
 char* getpass(const char* str)
 {
 	printf("%s: ", str);
+	fflush(stdout);
 
 	static char psswd[9];
 
