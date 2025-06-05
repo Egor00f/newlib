@@ -26,12 +26,12 @@ int tcsetattr (int fd, int optional_actions, const struct termios *termios_p)
 {
 	if (fd < 0)
 	{
-		__set_errno (EBADF);
+		errno = EBADF;
 		return -1;
 	}
 	if (termios_p == NULL)
 	{
-		__set_errno (EINVAL);
+		errno = EINVAL;
 		return -1;
 	}
 	
@@ -42,7 +42,7 @@ int tcsetattr (int fd, int optional_actions, const struct termios *termios_p)
 		case TCSAFLUSH:
 			break;
 		default:
-	  		__set_errno (EINVAL);
+	  		errno = EINVAL;
 			return -1;
 	}
 
@@ -50,11 +50,11 @@ int tcsetattr (int fd, int optional_actions, const struct termios *termios_p)
 		bad_speed(termios_p->__ispeed == 0 ?
 		termios_p->__ospeed : termios_p->__ispeed))
 	{
-		__set_errno (EINVAL);
+		errno = EINVAL;
 		return -1;
 	}
 
-	__set_errno (ENOSYS);
+	errno = ENOSYS;
 	return -1;
 }
 

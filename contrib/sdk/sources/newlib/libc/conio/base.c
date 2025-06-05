@@ -111,7 +111,7 @@ void highvideo()
 
 void lowvideo()
 {
-	con_("\033[0m");
+	puts("\033[0m");
 
 	uint8_t back = (__conio_attributes << 4);
 	uint8_t text = (__conio_attributes & 0b1111);
